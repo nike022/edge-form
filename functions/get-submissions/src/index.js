@@ -45,9 +45,10 @@ export default {
 
       const submissionIds = JSON.parse(submissionsData);
 
-      // Fetch all submissions
+      // Fetch only the last 50 submissions to avoid timeout
+      const recentIds = submissionIds.slice(-50);
       const submissions = [];
-      for (const id of submissionIds) {
+      for (const id of recentIds) {
         try {
           const data = await edgeKv.get(id, { type: 'json' });
           if (data) {
