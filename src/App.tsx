@@ -502,15 +502,23 @@ function App() {
                     </tr>
                   </thead>
                   <tbody>
-                    {submissions.map((sub) => (
-                      <tr key={sub.id}>
-                        <td>{new Date(sub.timestamp).toLocaleString('zh-CN')}</td>
-                        <td>{sub.ip}</td>
-                        <td>
-                          <pre className="submission-data">{JSON.stringify(sub.data, null, 2)}</pre>
-                        </td>
-                      </tr>
-                    ))}
+                    {submissions.map((sub) => {
+                      const displayData: Record<string, string> = {}
+                      Object.entries(sub.data).forEach(([fieldId, value]) => {
+                        const field = fields.find(f => f.id === fieldId)
+                        const label = field ? field.label : fieldId
+                        displayData[label] = value
+                      })
+                      return (
+                        <tr key={sub.id}>
+                          <td>{new Date(sub.timestamp).toLocaleString('zh-CN')}</td>
+                          <td>{sub.ip}</td>
+                          <td>
+                            <pre className="submission-data">{JSON.stringify(displayData, null, 2)}</pre>
+                          </td>
+                        </tr>
+                      )
+                    })}
                   </tbody>
                 </table>
               </div>
