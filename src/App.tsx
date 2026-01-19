@@ -245,7 +245,7 @@ function App() {
         input = document.createElement('input');
         input.type = field.type;
       }
-      input.name = field.id;
+      input.name = field.label;
       input.required = field.required;
       if (field.validation) {
         if (field.validation.minLength) input.minLength = field.validation.minLength;
