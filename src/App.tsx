@@ -27,7 +27,7 @@ interface Submission {
 
 function App() {
   const [view, setView] = useState<'builder' | 'dashboard'>('builder')
-  const [formId, setFormId] = useState('contact-form')
+  const [formId, setFormId] = useState('main-form')
   const [fields, setFields] = useState<FormField[]>([
     { id: 'name', type: 'text', label: '姓名', required: true },
     { id: 'email', type: 'email', label: '邮箱', required: true },
