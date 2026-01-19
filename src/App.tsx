@@ -7,6 +7,14 @@ interface FormField {
   label: string
   required: boolean
   options?: string[]
+  validation?: {
+    minLength?: number
+    maxLength?: number
+    min?: number
+    max?: number
+    pattern?: string
+    errorMessage?: string
+  }
 }
 
 interface Submission {
@@ -191,6 +199,14 @@ function App() {
       }
       input.name = field.id;
       input.required = field.required;
+      if (field.validation) {
+        if (field.validation.minLength) input.minLength = field.validation.minLength;
+        if (field.validation.maxLength) input.maxLength = field.validation.maxLength;
+        if (field.validation.min) input.min = field.validation.min;
+        if (field.validation.max) input.max = field.validation.max;
+        if (field.validation.pattern) input.pattern = field.validation.pattern;
+        if (field.validation.errorMessage) input.title = field.validation.errorMessage;
+      }
       input.style.width = '100%';
       input.style.padding = '0.75rem';
       input.style.border = '1px solid #ddd';
@@ -331,6 +347,56 @@ function App() {
                       >
                         + 添加选项
                       </button>
+                    </div>
+                  )}
+
+                  {(field.type === 'text' || field.type === 'textarea' || field.type === 'tel' || field.type === 'url') && (
+                    <div className="field-validation">
+                      <div className="validation-row">
+                        <input
+                          type="number"
+                          placeholder="最小长度"
+                          value={field.validation?.minLength || ''}
+                          onChange={(e) => updateField(field.id, {
+                            validation: { ...field.validation, minLength: e.target.value ? parseInt(e.target.value) : undefined }
+                          })}
+                          className="validation-input"
+                        />
+                        <input
+                          type="number"
+                          placeholder="最大长度"
+                          value={field.validation?.maxLength || ''}
+                          onChange={(e) => updateField(field.id, {
+                            validation: { ...field.validation, maxLength: e.target.value ? parseInt(e.target.value) : undefined }
+                          })}
+                          className="validation-input"
+                        />
+                      </div>
+                    </div>
+                  )}
+
+                  {field.type === 'number' && (
+                    <div className="field-validation">
+                      <div className="validation-row">
+                        <input
+                          type="number"
+                          placeholder="最小值"
+                          value={field.validation?.min || ''}
+                          onChange={(e) => updateField(field.id, {
+                            validation: { ...field.validation, min: e.target.value ? parseInt(e.target.value) : undefined }
+                          })}
+                          className="validation-input"
+                        />
+                        <input
+                          type="number"
+                          placeholder="最大值"
+                          value={field.validation?.max || ''}
+                          onChange={(e) => updateField(field.id, {
+                            validation: { ...field.validation, max: e.target.value ? parseInt(e.target.value) : undefined }
+                          })}
+                          className="validation-input"
+                        />
+                      </div>
                     </div>
                   )}
                 </div>

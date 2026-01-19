@@ -522,6 +522,28 @@
   color: var(--accent-primary);
 }
 
+/* Field validation */
+.field-validation {
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--border-color);
+}
+
+.validation-row {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.validation-input {
+  flex: 1;
+  padding: 0.5rem 0.75rem;
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  color: var(--text-primary);
+  font-size: 0.9rem;
+}
+
 /* Animations */
 @keyframes fadeIn {
   from {
