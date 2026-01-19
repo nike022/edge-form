@@ -47,6 +47,31 @@ function App() {
     setFields(fields.map(f => f.id === id ? { ...f, ...updates } : f))
   }
 
+  const addOption = (fieldId: string) => {
+    const field = fields.find(f => f.id === fieldId)
+    if (field) {
+      const newOptions = [...(field.options || []), '选项 ' + ((field.options?.length || 0) + 1)]
+      updateField(fieldId, { options: newOptions })
+    }
+  }
+
+  const updateOption = (fieldId: string, optionIndex: number, value: string) => {
+    const field = fields.find(f => f.id === fieldId)
+    if (field && field.options) {
+      const newOptions = [...field.options]
+      newOptions[optionIndex] = value
+      updateField(fieldId, { options: newOptions })
+    }
+  }
+
+  const removeOption = (fieldId: string, optionIndex: number) => {
+    const field = fields.find(f => f.id === fieldId)
+    if (field && field.options) {
+      const newOptions = field.options.filter((_, i) => i !== optionIndex)
+      updateField(fieldId, { options: newOptions })
+    }
+  }
+
   const fetchSubmissions = async () => {
     setLoading(true)
     try {
@@ -101,16 +126,35 @@ function App() {
       label.style.display = 'block';
       label.style.marginBottom = '0.5rem';
       label.style.fontWeight = '500';
-      const input = field.type === 'textarea' ? document.createElement('textarea') : document.createElement('input');
+      let input;
+      if (field.type === 'textarea') {
+        input = document.createElement('textarea');
+        input.style.minHeight = '100px';
+      } else if (field.type === 'select') {
+        input = document.createElement('select');
+        const defaultOption = document.createElement('option');
+        defaultOption.value = '';
+        defaultOption.textContent = '请选择...';
+        input.appendChild(defaultOption);
+        if (field.options) {
+          field.options.forEach(opt => {
+            const option = document.createElement('option');
+            option.value = opt;
+            option.textContent = opt;
+            input.appendChild(option);
+          });
+        }
+      } else {
+        input = document.createElement('input');
+        input.type = field.type;
+      }
       input.name = field.id;
       input.required = field.required;
-      if (field.type !== 'textarea') input.type = field.type;
       input.style.width = '100%';
       input.style.padding = '0.75rem';
       input.style.border = '1px solid #ddd';
       input.style.borderRadius = '8px';
       input.style.fontSize = '1rem';
-      if (field.type === 'textarea') input.style.minHeight = '100px';
       div.appendChild(label);
       div.appendChild(input);
       form.appendChild(div);
@@ -192,7 +236,13 @@ function App() {
                   <div className="field-controls">
                     <select
                       value={field.type}
-                      onChange={(e) => updateField(field.id, { type: e.target.value as FormField['type'] })}
+                      onChange={(e) => {
+                        const newType = e.target.value as FormField['type']
+                        updateField(field.id, {
+                          type: newType,
+                          options: newType === 'select' ? ['选项 1', '选项 2', '选项 3'] : undefined
+                        })
+                      }}
                       className="field-type-select"
                     >
                       <option value="text">文本</option>
@@ -209,6 +259,35 @@ function App() {
                       必填
                     </label>
                   </div>
+
+                  {field.type === 'select' && (
+                    <div className="field-options">
+                      <div className="options-header">下拉选项：</div>
+                      {field.options?.map((option, index) => (
+                        <div key={index} className="option-item">
+                          <input
+                            type="text"
+                            value={option}
+                            onChange={(e) => updateOption(field.id, index, e.target.value)}
+                            className="option-input"
+                            placeholder={`选项 ${index + 1}`}
+                          />
+                          <button
+                            onClick={() => removeOption(field.id, index)}
+                            className="btn-remove-option"
+                          >
+                            ×
+                          </button>
+                        </div>
+                      ))}
+                      <button
+                        onClick={() => addOption(field.id)}
+                        className="btn-add-option"
+                      >
+                        + 添加选项
+                      </button>
+                    </div>
+                  )}
                 </div>
               ))}
 
@@ -239,6 +318,13 @@ function App() {
                     </label>
                     {field.type === 'textarea' ? (
                       <textarea className="preview-textarea" disabled />
+                    ) : field.type === 'select' ? (
+                      <select className="preview-input" disabled>
+                        <option value="">请选择...</option>
+                        {field.options?.map((option, i) => (
+                          <option key={i} value={option}>{option}</option>
+                        ))}
+                      </select>
                     ) : (
                       <input type={field.type} className="preview-input" disabled />
                     )}
