@@ -36,6 +36,9 @@ function App() {
   const [embedCode, setEmbedCode] = useState('')
   const [submissions, setSubmissions] = useState<Submission[]>([])
   const [loading, setLoading] = useState(false)
+  const [isAuthenticated, setIsAuthenticated] = useState(false)
+  const [password, setPassword] = useState('')
+  const [authError, setAuthError] = useState('')
 
   const addField = (type: FormField['type']) => {
     const fieldCount = fields.length + 1
@@ -82,13 +85,58 @@ function App() {
     }
   }
 
+  const handleLogin = async (e: React.FormEvent) => {
+    e.preventDefault()
+    setAuthError('')
+    setLoading(true)
+    try {
+      const response = await fetch('/api/auth', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ password })
+      })
+      const result = await response.json()
+      if (result.success) {
+        localStorage.setItem('auth_token', result.token)
+        setIsAuthenticated(true)
+        setPassword('')
+      } else {
+        setAuthError('密码错误')
+      }
+    } catch (error) {
+      setAuthError('登录失败,请重试')
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  const handleLogout = () => {
+    localStorage.removeItem('auth_token')
+    setIsAuthenticated(false)
+  }
+
+  useEffect(() => {
+    const token = localStorage.getItem('auth_token')
+    if (token) {
+      setIsAuthenticated(true)
+    }
+  }, [])
+
   const fetchSubmissions = async () => {
     setLoading(true)
     try {
-      const response = await fetch(`/api/get-submissions?formId=${formId}`)
+      const token = localStorage.getItem('auth_token')
+      const response = await fetch(`/api/get-submissions?formId=${formId}`, {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      })
       const result = await response.json()
       if (result.success) {
         setSubmissions(result.submissions)
+      } else if (response.status === 401) {
+        setIsAuthenticated(false)
+        localStorage.removeItem('auth_token')
       }
     } catch (error) {
       console.error('Failed to fetch submissions:', error)
@@ -474,15 +522,41 @@ function App() {
               )}
             </div>
           </div>
+        ) : !isAuthenticated ? (
+          <div className="login-container">
+            <div className="login-card">
+              <h2 className="login-title">管理员登录</h2>
+              <p className="login-subtitle">请输入密码查看数据</p>
+              <form onSubmit={handleLogin} className="login-form">
+                <input
+                  type="password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  placeholder="请输入密码"
+                  className="login-input"
+                  disabled={loading}
+                />
+                {authError && <p className="login-error">{authError}</p>}
+                <button type="submit" className="login-button" disabled={loading}>
+                  {loading ? '登录中...' : '登录'}
+                </button>
+              </form>
+            </div>
+          </div>
         ) : (
           <div className="dashboard-container">
             <div className="dashboard-header">
               <h2 className="dashboard-title">提交数据</h2>
-              {submissions.length > 0 && (
-                <button onClick={exportToCSV} className="btn-export">
-                  导出CSV
+              <div className="dashboard-actions">
+                {submissions.length > 0 && (
+                  <button onClick={exportToCSV} className="btn-export">
+                    导出CSV
+                  </button>
+                )}
+                <button onClick={handleLogout} className="btn-logout">
+                  退出登录
                 </button>
-              )}
+              </div>
             </div>
             {loading ? (
               <p className="loading-text">加载中...</p>
