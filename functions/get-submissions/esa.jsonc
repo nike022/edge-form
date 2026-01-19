@@ -1,0 +1,10 @@
+{
+  "name": "Get Form Submissions",
+  "description": "Retrieve form submissions from EdgeKV",
+  "entry": "./src/index.js",
+  "codeVersions": [],
+  "dev": {
+    "port": 18081,
+    "localUpstream": ""
+  }
+}

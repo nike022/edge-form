@@ -1,0 +1,10 @@
+{
+  "name": "Form Submit Handler",
+  "description": "Handle form submissions and store data in EdgeKV",
+  "entry": "./src/index.js",
+  "codeVersions": [],
+  "dev": {
+    "port": 18080,
+    "localUpstream": ""
+  }
+}
