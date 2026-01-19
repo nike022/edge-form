@@ -49,9 +49,11 @@ export default {
       const submissions = [];
       for (const id of submissionIds) {
         try {
-          const data = await edgeKv.get(id, { type: 'text' });
+          const data = await edgeKv.get(id, { type: 'json' });
           if (data) {
-            submissions.push(JSON.parse(data));
+            // When using type: 'json', EdgeKV returns parsed object
+            const parsedData = typeof data === 'string' ? JSON.parse(data) : data;
+            submissions.push(parsedData);
           }
         } catch (e) {
           console.error(`Failed to fetch submission ${id}:`, e);

@@ -40,7 +40,8 @@ export default {
         ip: request.headers.get('CF-Connecting-IP') || 'unknown',
       };
 
-      await edgeKv.put(submissionId, JSON.stringify(submissionData));
+      // Store as JSON to preserve UTF-8 encoding
+      await edgeKv.put(submissionId, JSON.stringify(submissionData), { type: 'json' });
 
       // Get existing submissions list for this form
       let submissions = [];
