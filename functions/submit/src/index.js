@@ -43,22 +43,32 @@ export default {
       // Store as JSON to preserve UTF-8 encoding
       await edgeKv.put(submissionId, JSON.stringify(submissionData), { type: 'json' });
 
-      // Get existing submissions list for this form
-      let submissions = [];
-      try {
-        const existingData = await edgeKv.get(`form_${formId}_submissions`, { type: 'text' });
-        if (existingData) {
-          submissions = JSON.parse(existingData);
+      // Update submissions list with retry mechanism to handle concurrent writes
+      const maxRetries = 3;
+      for (let attempt = 0; attempt < maxRetries; attempt++) {
+        try {
+          // Get existing submissions list
+          let submissions = [];
+          const existingData = await edgeKv.get(`form_${formId}_submissions`, { type: 'text' });
+          if (existingData) {
+            submissions = JSON.parse(existingData);
+          }
+
+          // Add new submission to list
+          submissions.push(submissionId);
+
+          // Store updated submissions list
+          await edgeKv.put(`form_${formId}_submissions`, JSON.stringify(submissions));
+          break; // Success, exit retry loop
+        } catch (e) {
+          if (attempt === maxRetries - 1) {
+            console.error('Failed to update submissions list after retries:', e);
+            // Continue anyway - the submission data is already stored
+          }
+          // Wait a bit before retrying
+          await new Promise(resolve => setTimeout(resolve, 50 * (attempt + 1)));
         }
-      } catch (e) {
-        // First submission for this form
       }
-
-      // Add new submission to list
-      submissions.push(submissionId);
-
-      // Store updated submissions list
-      await edgeKv.put(`form_${formId}_submissions`, JSON.stringify(submissions));
 
       return new Response(JSON.stringify({
         success: true,
