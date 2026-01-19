@@ -139,6 +139,11 @@ function App() {
   useEffect(() => {
     if (view === 'dashboard') {
       fetchSubmissions()
+      // 自动刷新：每10秒重新获取数据
+      const interval = setInterval(() => {
+        fetchSubmissions()
+      }, 10000)
+      return () => clearInterval(interval)
     }
   }, [view, formId])
 
