@@ -27,16 +27,11 @@ interface Submission {
 
 function App() {
   const [view, setView] = useState<'builder' | 'dashboard'>('builder')
-  const [formId, setFormId] = useState('demo-form')
+  const [formId, setFormId] = useState('contact-form')
   const [fields, setFields] = useState<FormField[]>([
-    { id: 'name', type: 'text', label: '姓名', required: true, validation: { minLength: 2, maxLength: 20 } },
-    { id: 'email', type: 'email', label: '邮箱地址', required: true },
-    { id: 'phone', type: 'tel', label: '联系电话', required: true, validation: { minLength: 11, maxLength: 11 } },
-    { id: 'age', type: 'number', label: '年龄', required: false, validation: { min: 18, max: 100 } },
-    { id: 'birthday', type: 'date', label: '出生日期', required: false },
-    { id: 'website', type: 'url', label: '个人网站', required: false },
-    { id: 'city', type: 'select', label: '所在城市', required: true, options: ['北京', '上海', '广州', '深圳', '杭州', '成都', '其他'] },
-    { id: 'message', type: 'textarea', label: '留言内容', required: false, validation: { maxLength: 500 } }
+    { id: 'name', type: 'text', label: '姓名', required: true },
+    { id: 'email', type: 'email', label: '邮箱', required: true },
+    { id: 'message', type: 'textarea', label: '留言', required: false }
   ])
   const [embedCode, setEmbedCode] = useState('')
   const [submissions, setSubmissions] = useState<Submission[]>([])
