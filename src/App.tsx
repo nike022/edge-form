@@ -145,6 +145,32 @@ function App() {
     }
   }
 
+  const handleDelete = async (submissionId: string) => {
+    if (!confirm('确定要删除这条数据吗?此操作不可恢复!')) {
+      return
+    }
+    try {
+      const token = localStorage.getItem('auth_token')
+      const response = await fetch(`/api/delete-submission?submissionId=${submissionId}&formId=${formId}`, {
+        method: 'DELETE',
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      })
+      const result = await response.json()
+      if (result.success) {
+        setSubmissions(submissions.filter(s => s.id !== submissionId))
+      } else if (response.status === 401) {
+        setIsAuthenticated(false)
+        localStorage.removeItem('auth_token')
+      } else {
+        alert('删除失败: ' + result.error)
+      }
+    } catch (error) {
+      alert('删除失败,请重试')
+    }
+  }
+
   const exportToCSV = () => {
     if (submissions.length === 0) {
       alert('没有数据可导出')
@@ -573,6 +599,7 @@ function App() {
                       <th>提交时间</th>
                       <th>IP地址</th>
                       <th>表单数据</th>
+                      <th>操作</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -589,6 +616,11 @@ function App() {
                           <td>{sub.ip}</td>
                           <td>
                             <pre className="submission-data">{JSON.stringify(displayData, null, 2)}</pre>
+                          </td>
+                          <td>
+                            <button type="button" onClick={() => handleDelete(sub.id)} className="btn-delete">
+                              删除
+                            </button>
                           </td>
                         </tr>
                       )
