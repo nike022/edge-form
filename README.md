@@ -1,232 +1,274 @@
 # EdgeForm - 边缘表单构建器
 
-> 基于阿里云 ESA（边缘安全加速）生态的无服务器表单解决方案
+<div align="center">
 
-## 📋 项目简介
+![ESA Logo](https://img.alicdn.com/imgextra/i3/O1CN01QFXgZE1xjKGZ8qY8v_!!6000000006480-2-tps-200-200.png)
 
-EdgeForm 是一个完全运行在边缘的表单构建和管理系统，充分利用阿里云 ESA 生态的三大核心能力：
+**本项目由阿里云ESA提供加速、计算和保护**
 
-- **ESA Pages** - 静态页面托管，全球边缘节点分发
-- **ESA Edge Functions** - 边缘函数计算，零冷启动
-- **EdgeKV** - 边缘键值存储，毫秒级读写
+一个基于阿里云ESA边缘计算平台构建的无服务器表单系统，让表单创建和数据管理变得简单高效。
 
-## ✨ 核心特性
+[在线演示](https://form.178000.cn) | [GitHub仓库](https://github.com/nike022/edge-form)
 
-### 1. 可视化表单构建器
-- 拖拽式字段管理（文本、邮箱、多行文本、下拉选择）
-- 实时表单预览
-- 字段必填项配置
-- 自定义表单 ID
+</div>
 
-### 2. 一键生成嵌入代码
-- 生成独立的 HTML/JavaScript 代码片段
-- 可嵌入任何网站
-- 自动处理表单提交和验证
-- 无需额外依赖
+---
 
-### 3. 数据管理后台
-- 实时查看表单提交数据
-- 显示提交时间和 IP 地址
-- JSON 格式展示表单内容
-- 按表单 ID 筛选数据
+## 📋 项目介绍
 
-### 4. 边缘计算优势
-- 全球边缘节点部署，访问速度快
-- 零冷启动，响应时间稳定
-- 数据存储在边缘，降低延迟
-- 自动扩容，无需运维
+EdgeForm是一个完全运行在边缘的表单构建和管理系统,充分利用阿里云ESA的边缘计算能力,实现了:
 
-## 🏗️ 项目结构
+- **零后端部署** - 无需传统服务器,完全基于ESA边缘函数和EdgeKV
+- **全球加速** - 依托ESA全球节点,表单提交和数据访问毫秒级响应
+- **安全可靠** - JWT认证保护管理后台,SHA-256密码加密,数据安全存储在EdgeKV
 
-```
-edge-form/
-├── src/                          # 前端源码
-│   ├── App.tsx                   # 主应用组件
-│   ├── App.css                   # 样式文件
-│   └── main.tsx                  # 入口文件
-├── functions/                    # 边缘函数
-│   ├── submit/                   # 表单提交函数
-│   │   ├── src/index.js         # 处理表单提交
-│   │   └── esa.jsonc            # 函数配置
-│   └── get-submissions/          # 获取提交数据函数
-│       ├── src/index.js         # 查询提交记录
-│       └── esa.jsonc            # 函数配置
-├── esa.jsonc                     # ESA Pages 配置
-├── package.json                  # 项目依赖
-└── README.md                     # 项目文档
-```
+### 🎯 三大评选维度亮点
+
+#### 🎨 创意卓越
+- **可视化表单构建器** - 拖拽式界面,实时预览,所见即所得
+- **一键生成嵌入代码** - 自动生成完整的HTML/JS代码,可直接嵌入任何网站
+- **现代化UI设计** - 深色主题,渐变色彩,流畅动画,提供优秀的用户体验
+- **智能字段管理** - 支持文本、邮箱、电话、日期、下拉选择等多种字段类型
+
+#### 💼 应用价值
+- **开箱即用** - 部署后即可使用,无需复杂配置
+- **真实场景应用** - 适用于问卷调查、用户反馈、活动报名、联系表单等多种场景
+- **数据管理完善** - 支持数据查看、导出CSV、删除等完整的CRUD操作
+- **零成本运营** - 基于ESA边缘计算,无需维护服务器,成本极低
+- **全球可用** - 依托ESA全球节点,任何地区都能快速访问
+
+#### 🔬 技术探索
+- **完整的ESA生态应用** - 深度整合ESA Pages + 边缘函数 + EdgeKV
+- **边缘计算最佳实践** - 展示了如何在边缘构建完整的全栈应用
+- **无服务器架构** - 真正的Serverless,自动扩展,按需付费
+- **现代前端技术栈** - React 18 + TypeScript + Vite,类型安全,开发体验优秀
+- **安全认证机制** - JWT + SHA-256,企业级安全标准
+
+---
+
+## ✨ 功能特性
+
+### 表单构建
+- 📝 支持多种字段类型:文本、邮箱、电话、日期、下拉选择、文本域
+- ⚙️ 字段验证配置:必填、长度限制、正则表达式、自定义错误提示
+- 👁️ 实时预览:边编辑边预览表单效果
+- 📋 一键生成嵌入代码:复制即用,无需额外开发
+
+### 数据管理
+- 🔐 JWT认证保护:只有管理员可以查看提交数据
+- 📊 数据列表展示:时间、IP、表单内容一目了然
+- 📥 CSV导出:支持导出所有数据为CSV格式
+- 🗑️ 数据删除:支持单条删除,带二次确认防止误删
+- 🔄 实时刷新:自动获取最新提交数据
+
+### 安全特性
+- 🔒 密码哈希存储:SHA-256加密,安全可靠
+- 🎫 JWT Token认证:7天有效期,自动过期保护
+- 🚫 权限控制:表单提交公开,数据查看需认证
+- 🛡️ CORS配置:支持跨域请求,安全可控
+
+---
+
+## 🛠️ 技术栈
+
+### 前端
+- **React 18** - 现代化UI框架
+- **TypeScript** - 类型安全
+- **Vite** - 极速构建工具
+- **CSS3** - 现代化样式,支持渐变、动画
+
+### 边缘计算
+- **ESA Pages** - 静态资源托管和全球加速
+- **ESA Edge Functions** - 边缘函数处理业务逻辑
+  - `submit` - 处理表单提交
+  - `auth` - 用户认证和JWT生成
+  - `get-submissions` - 获取提交数据(需认证)
+  - `delete-submission` - 删除数据(需认证)
+- **EdgeKV** - 边缘键值存储
+  - 存储表单提交数据
+  - 存储管理员密码哈希
+  - 存储JWT密钥
+
+### 安全
+- **Web Crypto API** - 密码哈希和JWT签名
+- **JWT** - 无状态认证
+- **HMAC-SHA256** - JWT签名算法
+
+---
 
 ## 🚀 快速开始
 
-### 1. 安装依赖
+### 1. 克隆项目
+
+```bash
+git clone https://github.com/nike022/edge-form.git
+cd edge-form
+```
+
+### 2. 安装依赖
 
 ```bash
 npm install
 ```
 
-### 2. 本地开发
+### 3. 本地开发
 
 ```bash
 npm run dev
 ```
 
-访问 `http://localhost:5173` 查看应用。
+访问 http://localhost:5173
 
-### 3. 构建生产版本
+### 4. 构建项目
 
 ```bash
 npm run build
 ```
 
-构建产物将输出到 `dist/` 目录。
+### 5. 部署到ESA Pages
 
-### 4. 部署到 ESA Pages
+1. 将项目推送到GitHub
+2. 登录[阿里云ESA控制台](https://esa.console.aliyun.com/)
+3. 创建Pages项目,连接GitHub仓库
+4. 配置构建命令:`npm run build`
+5. 配置输出目录:`dist`
+6. 部署完成
 
-1. 登录阿里云 ESA 控制台
-2. 创建新的 Pages 应用
-3. 上传项目代码或连接 Git 仓库
-4. ESA 会自动执行 `npm install` 和 `npm run build`
-5. 部署完成后，配置边缘函数路由
+### 6. 配置Edge Functions
 
-### 5. 配置边缘函数
+在ESA控制台创建以下Edge Functions:
 
-在 ESA 控制台配置以下路由：
+#### submit函数
+- 代码:`functions/submit/src/index.js`
+- 路由:`/api/submit`
 
-- `/api/submit` → `functions/submit`
-- `/api/get-submissions` → `functions/get-submissions`
+#### auth函数
+- 代码:`functions/auth/src/index.js`
+- 路由:`/api/auth`
 
-### 6. 配置 EdgeKV
+#### get-submissions函数
+- 代码:`functions/get-submissions/src/index.js`
+- 路由:`/api/get-submissions`
 
-1. 在 ESA 控制台创建 EdgeKV 命名空间：`edge-form`
-2. 边缘函数会自动使用该命名空间存储数据
+#### delete-submission函数
+- 代码:`functions/delete-submission/src/index.js`
+- 路由:`/api/delete-submission`
 
-## 💡 使用方法
+### 7. 配置EdgeKV
+
+1. 在ESA控制台创建EdgeKV命名空间:`edge-form`
+2. 打开 `setup-password.html` 生成密码哈希和JWT密钥
+3. 在EdgeKV中添加以下键值对:
+   - `admin_password_hash`: 你的密码哈希
+   - `jwt_secret`: 生成的JWT密钥
+
+---
+
+## 📖 使用说明
 
 ### 创建表单
 
-1. 在"表单构建器"页面设置表单 ID
-2. 添加所需字段（文本、邮箱、多行文本等）
-3. 配置字段标签和必填属性
+1. 访问网站,进入"表单构建"页面
+2. 点击"添加字段"按钮,选择字段类型
+3. 配置字段属性:标签、是否必填、验证规则等
 4. 点击"生成嵌入代码"
+5. 复制代码,粘贴到你的网站中
 
-### 嵌入表单到网站
+### 管理数据
 
-1. 复制生成的嵌入代码
-2. 粘贴到目标网页的 HTML 中
-3. 表单会自动渲染并处理提交
+1. 点击"数据管理"标签
+2. 输入管理员密码登录
+3. 查看所有提交数据
+4. 可以导出CSV或删除单条数据
 
-### 查看提交数据
+### 嵌入表单
 
-1. 切换到"数据管理"页面
-2. 系统会自动加载当前表单的所有提交记录
-3. 查看提交时间、IP 地址和表单内容
+将生成的代码粘贴到你的HTML页面中:
 
-## 🔧 技术栈
-
-### 前端
-- **React 18** - UI 框架
-- **TypeScript** - 类型安全
-- **Vite** - 构建工具
-- **ESLint** - 代码规范
-
-### 后端
-- **ESA Edge Functions** - 边缘函数计算
-- **EdgeKV** - 边缘键值存储
-- **JavaScript** - 函数运行时
-
-## 🌟 ESA 生态集成
-
-本项目完整展示了 ESA 生态的三大核心能力：
-
-### 1. ESA Pages
-- 静态资源托管在全球边缘节点
-- 自动 HTTPS 和 CDN 加速
-- 单页应用路由支持
-
-### 2. ESA Edge Functions
-- 表单提交处理（`/api/submit`）
-- 数据查询接口（`/api/get-submissions`）
-- 零冷启动，毫秒级响应
-
-### 3. EdgeKV
-- 表单提交数据存储
-- 提交记录索引管理
-- 全球边缘节点同步
-
-## 📝 API 说明
-
-### POST /api/submit
-
-提交表单数据
-
-**请求体：**
-```json
-{
-  "formId": "contact-form",
-  "submission": {
-    "name": "张三",
-    "email": "zhangsan@example.com",
-    "message": "这是一条留言"
-  }
-}
+```html
+<!-- EdgeForm 嵌入代码 -->
+<div id="edge-form-my-form"></div>
+<script>
+  // 自动生成的表单代码
+</script>
 ```
 
-**响应：**
-```json
-{
-  "success": true,
-  "submissionId": "contact-form_1234567890_abc123"
-}
+---
+
+## 🏗️ 项目架构
+
+```
+edge-form/
+├── src/                      # 前端源码
+│   ├── App.tsx              # 主应用组件
+│   ├── App.css              # 样式文件
+│   └── main.tsx             # 入口文件
+├── functions/               # Edge Functions
+│   ├── submit/              # 表单提交函数
+│   ├── auth/                # 认证函数
+│   ├── get-submissions/     # 获取数据函数
+│   └── delete-submission/   # 删除数据函数
+├── setup-password.html      # 密码配置工具
+└── README.md               # 项目文档
 ```
 
-### GET /api/get-submissions?formId=contact-form
+---
 
-获取表单提交记录
+## 🔒 安全说明
 
-**响应：**
-```json
-{
-  "success": true,
-  "submissions": [
-    {
-      "id": "contact-form_1234567890_abc123",
-      "formId": "contact-form",
-      "data": {
-        "name": "张三",
-        "email": "zhangsan@example.com"
-      },
-      "timestamp": "2026-01-19T10:30:00.000Z",
-      "ip": "1.2.3.4"
-    }
-  ]
-}
-```
+- 管理员密码使用SHA-256哈希存储,不存储明文
+- JWT Token有效期7天,过期自动失效
+- 所有管理接口都需要JWT认证
+- 表单提交接口公开,但记录IP地址
+- 支持CORS,可配置允许的域名
 
-## 🎯 竞赛亮点
+---
 
-### 创意性
-- 完全无服务器架构，无需后端服务器
-- 可视化表单构建，降低使用门槛
-- 一键生成嵌入代码，即插即用
+## 📊 性能优势
 
-### 实用价值
-- 适用于企业官网、活动页面、问卷调查等场景
-- 全球边缘部署，访问速度快
-- 数据实时存储，管理便捷
+- **边缘计算** - 全球节点就近响应,延迟低至毫秒级
+- **无服务器** - 自动扩展,无需担心并发压力
+- **CDN加速** - 静态资源全球分发,加载速度极快
+- **按需付费** - 只为实际使用付费,成本极低
 
-### 技术探索
-- 深度集成 ESA 三大核心能力
-- 边缘计算 + 边缘存储的完整方案
-- 展示 ESA 生态的技术优势
+---
+
+## 🏆 参赛信息
+
+本项目参加**阿里云ESA Pages 边缘开发大赛**
+
+### 赛事介绍
+"阿里云ESA Pages 边缘开发大赛"是阿里云边缘安全加速ESA依托阿里云天池举办的前沿技术赛事。聚焦边缘计算、AI与前端工程的深度融合,让代码和AI在边缘绽放。
+
+### 项目亮点
+- **创意卓越**: 可视化表单构建器,一键生成嵌入代码,现代化UI设计
+- **应用价值**: 开箱即用,真实场景应用,数据管理完善,零成本运营
+- **技术探索**: 完整的ESA生态应用,边缘计算最佳实践,无服务器架构
+
+---
+
+## 🤝 贡献
+
+欢迎提交Issue和Pull Request!
+
+---
 
 ## 📄 开源协议
 
 MIT License
 
-## 🤝 贡献
+---
 
-欢迎提交 Issue 和 Pull Request！
+## 👨‍💻 作者
 
-## 📧 联系方式
+- GitHub: [@nike022](https://github.com/nike022)
+- 项目地址: [https://github.com/nike022/edge-form](https://github.com/nike022/edge-form)
+- 在线演示: [https://form.178000.cn](https://form.178000.cn)
 
-如有问题或建议，请通过 Issue 联系我们。
+---
+
+## 🙏 致谢
+
+感谢阿里云ESA团队提供的强大边缘计算平台,让这个项目得以实现。
+
+**本项目由阿里云ESA提供加速、计算和保护**
