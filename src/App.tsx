@@ -3,7 +3,7 @@ import './App.css'
 
 interface FormField {
   id: string
-  type: 'text' | 'email' | 'textarea' | 'select'
+  type: 'text' | 'email' | 'textarea' | 'select' | 'number' | 'date' | 'tel' | 'url'
   label: string
   required: boolean
   options?: string[]
@@ -87,6 +87,45 @@ function App() {
     } finally {
       setLoading(false)
     }
+  }
+
+  const exportToCSV = () => {
+    if (submissions.length === 0) {
+      alert('没有数据可导出')
+      return
+    }
+
+    // 获取所有字段名
+    const allFields = new Set<string>()
+    submissions.forEach(sub => {
+      Object.keys(sub.data).forEach(key => allFields.add(key))
+    })
+    const fieldNames = Array.from(allFields)
+
+    // 创建CSV内容
+    const headers = ['提交时间', 'IP地址', ...fieldNames]
+    const csvRows = [headers.join(',')]
+
+    submissions.forEach(sub => {
+      const row = [
+        new Date(sub.timestamp).toLocaleString('zh-CN'),
+        sub.ip,
+        ...fieldNames.map(field => {
+          const value = sub.data[field] || ''
+          // 处理包含逗号或引号的值
+          return `"${String(value).replace(/"/g, '""')}"`
+        })
+      ]
+      csvRows.push(row.join(','))
+    })
+
+    // 下载CSV文件
+    const csvContent = '\uFEFF' + csvRows.join('\n') // 添加BOM以支持中文
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' })
+    const link = document.createElement('a')
+    link.href = URL.createObjectURL(blob)
+    link.download = `${formId}_submissions_${Date.now()}.csv`
+    link.click()
   }
 
   useEffect(() => {
@@ -249,6 +288,10 @@ function App() {
                     >
                       <option value="text">文本</option>
                       <option value="email">邮箱</option>
+                      <option value="tel">电话</option>
+                      <option value="number">数字</option>
+                      <option value="date">日期</option>
+                      <option value="url">网址</option>
                       <option value="textarea">多行文本</option>
                       <option value="select">下拉选择</option>
                     </select>
@@ -295,13 +338,25 @@ function App() {
 
               <div className="add-field-buttons">
                 <button onClick={() => addField('text')} className="btn-add-field">
-                  + 文本字段
+                  + 文本
                 </button>
                 <button onClick={() => addField('email')} className="btn-add-field">
-                  + 邮箱字段
+                  + 邮箱
+                </button>
+                <button onClick={() => addField('tel')} className="btn-add-field">
+                  + 电话
+                </button>
+                <button onClick={() => addField('number')} className="btn-add-field">
+                  + 数字
+                </button>
+                <button onClick={() => addField('date')} className="btn-add-field">
+                  + 日期
                 </button>
                 <button onClick={() => addField('textarea')} className="btn-add-field">
                   + 多行文本
+                </button>
+                <button onClick={() => addField('select')} className="btn-add-field">
+                  + 下拉选择
                 </button>
               </div>
 
@@ -357,6 +412,11 @@ function App() {
           <div className="dashboard-container">
             <div className="dashboard-header">
               <h2 className="dashboard-title">提交数据</h2>
+              {submissions.length > 0 && (
+                <button onClick={exportToCSV} className="btn-export">
+                  导出CSV
+                </button>
+              )}
             </div>
             {loading ? (
               <p className="loading-text">加载中...</p>
