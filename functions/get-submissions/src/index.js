@@ -61,6 +61,9 @@ export default {
         }
       }
 
+      // Sort by timestamp descending (newest first)
+      submissions.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+
       return new Response(JSON.stringify({
         success: true,
         submissions
