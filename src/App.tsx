@@ -30,11 +30,13 @@ function App() {
   const [loading, setLoading] = useState(false)
 
   const addField = (type: FormField['type']) => {
+    const fieldCount = fields.length + 1
     const newField: FormField = {
-      id: Date.now().toString(),
+      id: `field_${fieldCount}`,
       type,
       label: '新字段',
-      required: false
+      required: false,
+      options: type === 'select' ? ['选项 1', '选项 2', '选项 3'] : undefined
     }
     setFields([...fields, newField])
   }
