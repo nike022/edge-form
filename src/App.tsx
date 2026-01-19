@@ -261,13 +261,13 @@ function App() {
                 </label>
                 {field.type === 'textarea' ? (
                   <textarea
-                    style={{ width: '100%', padding: '0.5rem', border: '1px solid #d1d5db', borderRadius: '4px', minHeight: '100px' }}
+                    style={{ width: '100%', padding: '0.5rem', border: '2px solid #9ca3af', borderRadius: '4px', minHeight: '100px', backgroundColor: '#f9fafb' }}
                     disabled
                   />
                 ) : (
                   <input
                     type={field.type}
-                    style={{ width: '100%', padding: '0.5rem', border: '1px solid #d1d5db', borderRadius: '4px' }}
+                    style={{ width: '100%', padding: '0.5rem', border: '2px solid #9ca3af', borderRadius: '4px', backgroundColor: '#f9fafb' }}
                     disabled
                   />
                 )}
