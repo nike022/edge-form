@@ -100,6 +100,8 @@ function App() {
         localStorage.setItem('auth_token', result.token)
         setIsAuthenticated(true)
         setPassword('')
+        // 登录成功后立即加载数据
+        fetchSubmissions()
       } else {
         setAuthError('密码错误')
       }
