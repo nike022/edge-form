@@ -37,7 +37,7 @@ export default {
         formId,
         data: submission,
         timestamp: new Date().toISOString(),
-        ip: request.headers.get('CF-Connecting-IP') || 'unknown',
+        ip: request.headers.get('X-Forwarded-For')?.split(',')[0] || request.headers.get('X-Real-IP') || 'unknown',
       };
 
       // Store as JSON to preserve UTF-8 encoding
