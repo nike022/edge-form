@@ -69,11 +69,13 @@ function App() {
   }, [view, formId])
 
   const generateEmbedCode = () => {
+    const apiBaseUrl = window.location.origin
     const code = `<!-- EdgeForm 嵌入代码 -->
 <div id="edge-form-${formId}"></div>
 <script>
   (function() {
     const formConfig = ${JSON.stringify({ formId, fields }, null, 2)};
+    const apiBaseUrl = '${apiBaseUrl}';
     // 表单渲染逻辑
     const container = document.getElementById('edge-form-${formId}');
     const form = document.createElement('form');
@@ -81,7 +83,7 @@ function App() {
       e.preventDefault();
       const formData = new FormData(e.target);
       const data = Object.fromEntries(formData);
-      const response = await fetch('/api/submit', {
+      const response = await fetch(apiBaseUrl + '/api/submit', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ formId: '${formId}', submission: data })
